@@ -109,6 +109,7 @@ function App() {
           <span>Ваш номер</span>
           <InputMask
             mask="+7 (999) 999-99-99"
+            value={phone}
             onChange={handlePhoneChange}
             {...register('phone', {
               required: "Это поле обязательно для заполнения",
