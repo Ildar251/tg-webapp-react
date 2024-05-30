@@ -15,7 +15,7 @@ function App() {
 
   const {
     register,
-    formState: { isValid, },
+    formState: {errors, isValid, },
     handleSubmit,
   } = useForm({
     mode: 'onBlur'
@@ -46,6 +46,8 @@ function App() {
             {(inputProps) => <input {...inputProps} type="tel" />}
           </InputMask>
         </label>
+        <div>{errors?.phone && <span>{errors?.phone?.message || "Ошибка"}</span>}</div>
+
 
         <label>
           <span>Ваш адрес</span>
