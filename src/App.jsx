@@ -54,7 +54,10 @@ function App() {
   const onSubmit = (data) => {
     alert(JSON.stringify(data))
   }
-
+  const handlePhoneChange = async (e) => {
+    const value = e.target.value;
+    setPhone(value);
+  }
 
   const handleAddressChange = async (e) => {
     const value = e.target.value;
@@ -97,6 +100,7 @@ function App() {
           <span>Ваш номер</span>
           <InputMask
             mask="+7 (999) 999-99-99"
+            onChange={handlePhoneChange}
             {...register('phone', {
               required: "Это поле обязательно для заполнения",
               pattern: {
