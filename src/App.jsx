@@ -12,11 +12,11 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [address, setAddress] = useState('');
 
-  const {tg, MainButton} = useTelegram();
+  const {tg} = useTelegram();
 
   useEffect(() => {
     tg.ready();
-
+    tg.MainButton.show();
     tg.MainButton.setParams({
       text: "Отправить данные"
     })
