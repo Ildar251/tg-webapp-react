@@ -7,6 +7,7 @@
   outline: none;
 }
 
+
 body {
   background-color: var(--tg-theme-bg-color);  
   color: var(--tg-theme-text-color);
@@ -37,6 +38,7 @@ form input {
   font-size: 16px;
   background-color: var(--tg-theme-bg-color);  
   border-bottom: 1px solid var(--tg-theme-text-color);
+  color: var(--tg-theme-text-color);
 }
 
 form input:focus {
@@ -45,5 +47,6 @@ form input:focus {
 
 form input::placeholder {
   font-family: "Noto Sans", sans-serif;
+  color: var(--tg-theme-text-color);
 }
 
