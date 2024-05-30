@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import InputMask from 'react-input-mask';
 import axios from 'axios';
@@ -13,6 +13,23 @@ function App() {
   const [address, setAddress] = useState('');
 
   const {tg} = useTelegram();
+
+  const onSendData = useCallback(() => {
+    const data = {
+      phone, 
+      address,
+    }
+
+    tg.sendData(JSON.stringify(data))
+  })
+
+  useEffect(() => {
+    tg.WebApp.onEvent('mainButonClicked', onSendData)
+
+    return () => {
+      tg.WebApp.offEvent('mainButonClicked', onSendData)
+    }
+  }, [])
 
   useEffect(() => {
     tg.ready();
