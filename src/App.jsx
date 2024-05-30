@@ -13,6 +13,10 @@ function App() {
 
   useEffect(() => {
     tg.ready();
+
+    tg.MainButton.setParams({
+      text: "Отправить данные"
+    })
   })
 
   const {
@@ -85,7 +89,7 @@ function App() {
 
 
         <label>
-          <span>Address</span>
+          <span>Ваш адрес</span>
           <input
             {...register('address', {
               required: "Это поле обязательно для заполнения"

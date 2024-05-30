@@ -81,7 +81,7 @@ form input[type=submit]:disabled {
   margin: 0;
   border: 1px solid  var(--tg-theme-text-color);
   border-radius: 4px;
-  background-color: var(--tg-theme-button-color);
+  background-color: var(--tg-theme-bg-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
   transition: 0.3;
