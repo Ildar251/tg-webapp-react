@@ -15,7 +15,7 @@ function App() {
 
   const {
     register,
-    formState: { errors, isValid, },
+    formState: { isValid, },
     handleSubmit,
   } = useForm({
     mode: 'onBlur'
