@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import InputMask from 'react-input-mask';
 import axios from 'axios';
+import { useTelegram } from "./hooks/useTelegram";
 
 import './App.css';
 
-const tg = window.Telegram.WebApp;
+
 
 function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [address, setAddress] = useState('');
+
+  const {tg, MainButton} = useTelegram();
 
   useEffect(() => {
     tg.ready();
@@ -46,7 +49,7 @@ function App() {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization':  `Token ${process.env.REACT_APP_DADATE_API_KEY}`
+              'Authorization': `Token ${process.env.REACT_APP_DADATE_API_KEY}`
             }
           }
         );
@@ -109,7 +112,7 @@ function App() {
         </label>
         <div>{errors?.address && <span>{errors?.address.message || "Ошибка"}</span>}</div>
 
-        <input type='submit' disabled={!isValid} />
+        {/* <input type='submit' disabled={!isValid} /> */}
       </form>
     </div>
   );
