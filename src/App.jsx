@@ -9,7 +9,9 @@ import './App.css';
 
 
 function App() {
+  
   const [suggestions, setSuggestions] = useState([]);
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
 
   const {tg} = useTelegram();
@@ -17,19 +19,19 @@ function App() {
   const onSendData = useCallback(() => {
     const data = {
       phone, 
-      address,
+      address
     }
 
     tg.sendData(JSON.stringify(data))
-  })
+  }, [phone, address])
 
   useEffect(() => {
-    tg.WebApp.onEvent('mainButonClicked', onSendData)
+    tg.onEvent('mainButonClicked', onSendData)
 
     return () => {
-      tg.WebApp.offEvent('mainButonClicked', onSendData)
+      tg.offEvent('mainButonClicked', onSendData)
     }
-  }, [])
+  }, [onSendData])
 
   useEffect(() => {
     tg.ready();
@@ -52,6 +54,7 @@ function App() {
   const onSubmit = (data) => {
     alert(JSON.stringify(data))
   }
+
 
   const handleAddressChange = async (e) => {
     const value = e.target.value;
