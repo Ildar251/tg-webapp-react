@@ -21,7 +21,7 @@ function App() {
       phone, 
       address
     }
-
+    console.log("Sending data:", data); // Добавьте этот лог для отладки
     tg.sendData(JSON.stringify(data))
   }, [phone, address])
 
