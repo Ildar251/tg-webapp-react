@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import InputMask from 'react-input-mask';
+import axios from 'axios';
 
 import './App.css';
 
 const tg = window.Telegram.WebApp;
 
-
 function App() {
+  const [suggestions, setSuggestions] = useState([]);
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     tg.ready();
@@ -15,8 +17,9 @@ function App() {
 
   const {
     register,
-    formState: {errors, isValid, },
+    formState: { errors, isValid, },
     handleSubmit,
+    setValue,
   } = useForm({
     mode: 'onBlur'
   });
@@ -25,6 +28,38 @@ function App() {
   const onSubmit = (data) => {
     alert(JSON.stringify(data))
   }
+
+  const handleAddressChange = async (e) => {
+    const value = e.target.value;
+    setAddress(value);
+
+    if (value.length > 3) {
+      try {
+        const response = await axios.post(
+          'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
+          { query: value },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization':  `Token ${process.env.REACT_APP_DADATE_API_KEY}`
+            }
+          }
+        );
+        setSuggestions(response.data.suggestions);
+      } catch (error) {
+        console.error('Error fetching address suggestions:', error);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setValue('address', suggestion.value);
+    setAddress(suggestion.value);
+    setSuggestions([]);
+  };
 
   return (
     <div className="App">
@@ -50,9 +85,25 @@ function App() {
 
 
         <label>
-          <span>Ваш адрес</span>
-          <input {...register('address')} />
+          <span>Address</span>
+          <input
+            {...register('address', {
+              required: "Это поле обязательно для заполнения"
+            })}
+            value={address}
+            onChange={handleAddressChange}
+          />
+          {suggestions.length > 0 && (
+            <ul className="suggestions-list">
+              {suggestions.map((suggestion, index) => (
+                <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                  {suggestion.value}
+                </li>
+              ))}
+            </ul>
+          )}
         </label>
+        <div>{errors?.address && <span>{errors?.address.message || "Ошибка"}</span>}</div>
 
         <input type='submit' disabled={!isValid} />
       </form>
