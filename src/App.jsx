@@ -26,10 +26,10 @@ function App() {
   }, [phone, address])
 
   useEffect(() => {
-    tg.onEvent('mainButonClicked', onSendData)
+    tg.onEvent('mainButtonClicked', onSendData)
 
     return () => {
-      tg.offEvent('mainButonClicked', onSendData)
+      tg.offEvent('mainButtonClicked', onSendData)
     }
   }, [onSendData])
 
