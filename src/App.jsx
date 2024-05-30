@@ -21,7 +21,7 @@ function App() {
       phone, 
       address
     }
-    console.log("Sending data:", data); 
+
     tg.sendData(JSON.stringify(data))
   }, [phone, address])
 
@@ -33,13 +33,7 @@ function App() {
     }
   }, [onSendData])
 
-  useEffect(() => {
-    tg.ready();
-    tg.MainButton.show();
-    tg.MainButton.setParams({
-      text: "Отправить данные"
-    })
-  })
+
 
   const {
     register,
@@ -50,6 +44,24 @@ function App() {
     mode: 'onBlur'
   });
 
+
+  useEffect(() => {
+    tg.ready();
+
+    tg.MainButton.show();
+    if(!isValid) {
+      tg.MainButton.disable();
+    } else {
+      tg.MainButton.enable();
+    }
+    
+
+
+
+    tg.MainButton.setParams({
+      text: "Отправить данные"
+    })
+  })
 
   const onSubmit = (data) => {
     alert(JSON.stringify(data))
