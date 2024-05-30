@@ -110,15 +110,16 @@ function App() {
           <InputMask
             mask="+7 (999) 999-99-99"
             value={phone}
-            onChange={handlePhoneChange}
+            onChange={(e) => {
+              handlePhoneChange(e);
+              // Вызовите onChange из register вручную
+              register('phone').onChange(e);
+            }}
+            onBlur={(e) => {
+              register('phone').onBlur(e);
+            }}
           >
-            {(inputProps) => <input {...inputProps} {...register('phone', {
-              required: "Это поле обязательно для заполнения",
-              pattern: {
-                value: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
-                message: "Введите корректный номер телефона"
-              }
-            })} />}
+            {(inputProps) => <input {...inputProps} type="tel" />}
           </InputMask>
         </label>
         <div>{errors?.phone && <span>{errors?.phone?.message || "Ошибка"}</span>}</div>
