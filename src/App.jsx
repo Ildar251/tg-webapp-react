@@ -54,9 +54,6 @@ function App() {
     } else {
       tg.MainButton.enable();
     }
-    
-
-
 
     tg.MainButton.setParams({
       text: "Отправить данные"
