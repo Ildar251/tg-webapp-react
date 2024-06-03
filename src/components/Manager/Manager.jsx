@@ -36,6 +36,7 @@ const Manager = () => {
                 },
                 body: JSON.stringify({ telegramId, orderId, newStatus }),
             });
+            console.log('Отправка запроса на сервер:', telegramId, orderId, newStatus);
 
             if (response.ok) {
                 // Обновляем статус заказа в локальном состоянии
