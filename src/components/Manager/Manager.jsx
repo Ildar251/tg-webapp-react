@@ -59,6 +59,19 @@ const Manager = () => {
         }
     };
 
+
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'В обработке':
+                return 'status-processing';
+            case 'Отменен':
+                return 'status-cancelled';
+            case 'Выполнен':
+                return 'status-completed';
+            default:
+                return '';
+        }
+    };
     return (
         <div className="manager-container">
             <h1>Управление заказами</h1>
@@ -77,10 +90,10 @@ const Manager = () => {
                                 <tr key={order.orderId}>
                                     <td>{order.orderId}</td>
                                     <td>
-                                        <select value={order.status} onChange={(e) => updateOrderStatus(user.telegramId, order.orderId, e.target.value)}>
-                                            <option value="В обработке">В обработке</option>
-                                            <option value="Отменен">Отменен</option>
-                                            <option value="Выполнен">Выполнен</option>
+                                        <select value={order.status} onChange={(e) => updateOrderStatus(user.telegramId, order.orderId, e.target.value)} className={getStatusClass(order.status)}>
+                                            <option value="В обработке" className='status-processingOpt'>В обработке</option>
+                                            <option value="Отменен" className='status-cancelledOpt'>Отменен</option>
+                                            <option value="Выполнен" className='status-completedOpt'>Выполнен</option>
                                         </select>
                                     </td>
                                 </tr>
