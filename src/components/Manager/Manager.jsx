@@ -73,12 +73,11 @@ const Manager = () => {
                             <td>{order.phone}</td>
                             <td>{order.address}</td>
                             <td>
-                                {order.status === "В обработке" && (
-                                    <>
-                                        <button onClick={() => updateOrderStatus(order.telegramId, order.orderId, "Выполнен")}>Выполнен</button>
-                                        <button onClick={() => updateOrderStatus(order.telegramId, order.orderId, "Отменен")}>Отменен</button>
-                                    </>
-                                )}
+                                <select value={order.status} onChange={(e) => updateOrderStatus(order.telegramId, order.orderId, e.target.value)}>
+                                    <option value="В обработке">В обработке</option>
+                                    <option value="Отменен">Отменен</option>
+                                    <option value="Выполнен">Выполнен</option>
+                                </select>
                             </td>
                         </tr>
                     ))}
