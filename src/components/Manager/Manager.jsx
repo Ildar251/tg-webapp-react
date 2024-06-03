@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './App.css';
 import "./Manager.css";
 const Manager = () => {
     const [orders, setOrders] = useState([]);
@@ -10,15 +11,13 @@ const Manager = () => {
                 const data = await response.json();
                 console.log('Полученные заказы:', data); // Вывод данных в консоль
 
-                // Извлечение всех заказов из структуры данных
-                const allOrders = data.flatMap(user =>
-                    user.orders.map(order => ({
-                        ...order,
-                        phone: user.phone,
-                        address: user.address
-                    }))
-                );
-                setOrders(allOrders);
+                // Упорядочиваем заказы по telegramId
+                const orderedOrders = data.reduce((acc, user) => {
+                    acc.push({ telegramId: user.telegramId, orders: user.orders });
+                    return acc;
+                }, []);
+
+                setOrders(orderedOrders);
             } catch (error) {
                 console.error('Ошибка при получении заказов:', error);
             }
@@ -37,17 +36,20 @@ const Manager = () => {
                 body: JSON.stringify({ telegramId, orderId, newStatus }),
             });
        
-
+    
             if (response.ok) {
                 // Обновляем статус заказа в локальном состоянии
                 setOrders((prevOrders) =>
-                    prevOrders.map((order) =>
-                        order.orderId === orderId && order.telegramId === telegramId
-                            ? { ...order, status: newStatus }
-                            : order
-                    )
+                    prevOrders.map((user) => ({
+                        ...user,
+                        orders: user.orders.map((o) =>
+                            o.orderId === orderId && user.telegramId === telegramId
+                                ? { ...o, status: newStatus }
+                                : o
+                        )
+                    }))
                 );
-
+    
                 console.log('Отправка запроса на сервер:', telegramId, orderId, newStatus);      
             } else {
                 console.error('Ошибка при обновлении статуса заказа');
@@ -60,32 +62,33 @@ const Manager = () => {
     return (
         <div className="manager-container">
             <h1>Управление заказами</h1>
-            <table className="orders-table">
-                <thead>
-                    <tr>
-                        <th>ID Заказа</th>
-                        <th>Телефон</th>
-                        <th>Адрес</th>
-                        <th>Статус</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map((order) => (
-                        <tr key={order.orderId}>
-                            <td>{order.orderId}</td>
-                            <td>{order.phone}</td>
-                            <td>{order.address}</td>
-                            <td>
-                                <select value={order.status} onChange={(e) => updateOrderStatus(order.telegramId, order.orderId, e.target.value)}>
-                                    <option value="В обработке">В обработке</option>
-                                    <option value="Отменен">Отменен</option>
-                                    <option value="Выполнен">Выполнен</option>
-                                </select>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {orders.map((user) => (
+                <div key={user.telegramId}>
+                    <h2>Telegram ID: {user.telegramId}</h2>
+                    <table className="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID Заказа</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {user.orders && user.orders.map((order) => (
+                                <tr key={order.orderId}>
+                                    <td>{order.orderId}</td>
+                                    <td>
+                                        <select value={order.status} onChange={(e) => updateOrderStatus(user.telegramId, order.orderId, e.target.value)}>
+                                            <option value="В обработке">В обработке</option>
+                                            <option value="Отменен">Отменен</option>
+                                            <option value="Выполнен">Выполнен</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ))}
         </div>
     );
 };
