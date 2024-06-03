@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import "./Manager.css";
 const Manager = () => {
     const [orders, setOrders] = useState([]);
 
