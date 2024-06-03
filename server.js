@@ -3,16 +3,9 @@ const cors = require('cors');
 const connectToDatabase = require('./db');
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 
-const corsOptions = {
-    origin: '*', // разрешить запросы с любого источника
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/orders', async (req, res) => {
