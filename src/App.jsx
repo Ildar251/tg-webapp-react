@@ -13,8 +13,8 @@ function App() {
   return (
     <div className="App">
         <Routes>
-          <Route index element={<Manager />} />
-          <Route path={'form'} element={<Form />} />
+          <Route index element={<Form />} />
+          <Route path={'manager'} element={<Manager />} />
         </Routes>
     </div>
   );
