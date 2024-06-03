@@ -18,24 +18,31 @@ const Manager = () => {
     };
 
     return (
-        <div>
-            <h1>Управление заказами</h1>
-            {orders.length === 0 ? (
-                <p>Нет заказов для отображения</p>
-            ) : (
-                <ul>
-                    {orders.map((order, index) => (
-                        <li key={index}>
-                            <p>ID заказа: {order.orderId}</p>
-                            <p>Статус: {order.status}</p>
-                            <p>Телефон: {order.phone}</p>
-                            <p>Адрес: {order.address}</p>
-                            <p>Приведенные друзья: {order.friends.length}</p>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+        <div className="manager-container">
+        <h1>Управление заказами</h1>
+        <table className="orders-table">
+            <thead>
+                <tr>
+                    <th>ID Заказа</th>
+                    <th>Телефон</th>
+                    <th>Адрес</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {orders.map((order) => (
+                    <tr key={order.orderId}>
+                        <td>{order.orderId}</td>
+                        <td>{order.phone}</td>
+                        <td>{order.address}</td>
+                        <td className={order.status === "В обработке" ? "status-processing" : "status-completed"}>
+                            {order.status}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
     );
 };
 
