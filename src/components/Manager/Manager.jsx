@@ -31,12 +31,12 @@ const Manager = () => {
             </thead>
             <tbody>
                 {orders.map((order) => (
-                    <tr key={order.orderId}>
+                    <tr key={order.orders.orderId}>
                         <td>{order.orderId}</td>
                         <td>{order.phone}</td>
                         <td>{order.address}</td>
                         <td className={order.status === "В обработке" ? "status-processing" : "status-completed"}>
-                            {order.status}
+                            {order.orders.status}
                         </td>
                     </tr>
                 ))}
