@@ -7,7 +7,7 @@ const Manager = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/orders');
+                const response = await fetch('0.0.0.0:5000/api/orders');
                 const data = await response.json();
                 console.log('Полученные заказы:', data); // Вывод данных в консоль
 
@@ -28,7 +28,7 @@ const Manager = () => {
 
     const updateOrderStatus = async (telegramId, orderId, newStatus) => {
         try {
-            const response = await fetch('http://localhost:5000/api/orders/update-status', {
+            const response = await fetch('0.0.0.0:5000/api/orders/update-status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
