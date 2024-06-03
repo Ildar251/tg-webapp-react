@@ -1,44 +1,41 @@
 .manager-container {
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.manager-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #343a40;
 }
 
 .orders-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
 }
 
-.orders-table th,
-.orders-table td {
-    padding: 12px 15px;
-    border: 1px solid #dee2e6;
+.orders-table th, .orders-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
     text-align: left;
 }
 
 .orders-table th {
-    background-color: #343a40;
-    color: #fff;
-}
-
-.orders-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
 .status-processing {
-    color: #ffc107; /* Желтый цвет для статуса "В обработке" */
+    color: orange;
 }
 
 .status-completed {
-    color: #28a745; /* Зеленый цвет для статуса "Выполнен" */
+    color: green;
+}
+
+.status-cancelled {
+    color: red;
+}
+
+button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
 }

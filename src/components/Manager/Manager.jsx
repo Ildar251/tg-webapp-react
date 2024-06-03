@@ -27,33 +27,64 @@ const Manager = () => {
         fetchOrders();
     }, []);
 
+    const updateOrderStatus = async (telegramId, orderId, newStatus) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/orders/update-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ telegramId, orderId, newStatus }),
+            });
+
+            if (response.ok) {
+                // Обновляем статус заказа в локальном состоянии
+                setOrders((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order.orderId === orderId && order.telegramId === telegramId
+                            ? { ...order, status: newStatus }
+                            : order
+                    )
+                );
+            } else {
+                console.error('Ошибка при обновлении статуса заказа');
+            }
+        } catch (error) {
+            console.error('Ошибка при обновлении статуса заказа:', error);
+        }
+    };
 
     return (
         <div className="manager-container">
-        <h1>Управление заказами</h1>
-        <table className="orders-table">
-            <thead>
-                <tr>
-                    <th>ID Заказа</th>
-                    <th>Телефон</th>
-                    <th>Адрес</th>
-                    <th>Статус</th>
-                </tr>
-            </thead>
-            <tbody>
-                {orders.map((order) => (
-                    <tr key={order.orderId}>
-                        <td>{order.orderId}</td>
-                        <td>{order.phone}</td>
-                        <td>{order.address}</td>
-                        <td className={order.status === "В обработке" ? "status-processing" : "status-completed"}>
-                            {order.status}
-                        </td>
+            <h1>Управление заказами</h1>
+            <table className="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID Заказа</th>
+                        <th>Телефон</th>
+                        <th>Адрес</th>
+                        <th>Статус</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {orders.map((order) => (
+                        <tr key={order.orderId}>
+                            <td>{order.orderId}</td>
+                            <td>{order.phone}</td>
+                            <td>{order.address}</td>
+                            <td>
+                                {order.status === "В обработке" && (
+                                    <>
+                                        <button onClick={() => updateOrderStatus(order.telegramId, order.orderId, "Выполнен")}>Выполнен</button>
+                                        <button onClick={() => updateOrderStatus(order.telegramId, order.orderId, "Отменен")}>Отменен</button>
+                                    </>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
