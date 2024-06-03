@@ -76,18 +76,18 @@ const Manager = () => {
         <div className="manager-container">
             <h1>Управление заказами</h1>
             {orders.map((user) => (
-                <div key={user.telegramId}>
+                <div >
                     <h2>Telegram ID: {user.telegramId}</h2>
-                    <div className="orders-table">
-                        <div>
-                            <div>
-                                <div>ID Заказа</div>
-                                <div>Статус</div>
-                            </div>
-                        </div>
-                        <div>
+                    <table className="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID Заказа</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {user.orders && user.orders.map((order) => (
-                                <div key={order.orderId}>
+                                <tr key={order.orderId}>
                                     <td>{order.orderId}</td>
                                     <td>
                                         <select value={order.status} onChange={(e) => updateOrderStatus(user.telegramId, order.orderId, e.target.value)} className={getStatusClass(order.status)}>
@@ -96,10 +96,10 @@ const Manager = () => {
                                             <option value="Выполнен" className='status-completedOpt'>Выполнен</option>
                                         </select>
                                     </td>
-                                </div>
+                                </tr>
                             ))}
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             ))}
         </div>
