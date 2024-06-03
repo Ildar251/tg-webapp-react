@@ -5,7 +5,14 @@ const connectToDatabase = require('./db');
 const app = express();
 const port = process.env.PORT || 5001;
 
-app.use(cors());
+const corsOptions = {
+    origin: '*', // разрешить запросы с любого источника
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/api/orders', async (req, res) => {
@@ -36,6 +43,6 @@ app.post('/api/orders/update-status', async (req, res) => {
     }
 });
 
-app.listen(port,  () => {
+app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
