@@ -78,22 +78,28 @@ const Manager = () => {
             {orders.map((user) => (
                 <div key={user.telegramId}>
                     <h2>Telegram ID: {user.telegramId}</h2>
-                    <table className="orders-table">
-                        <thead>
-                            <tr>
-                                <th>ID Заказа</th>
-                      
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div className="orders-table">
+                        <div>
+                            <div>
+                                <div>ID Заказа</div>
+                                <div>Статус</div>
+                            </div>
+                        </div>
+                        <div>
                             {user.orders && user.orders.map((order) => (
-                                <tr key={order.orderId}>
+                                <div key={order.orderId}>
                                     <td>{order.orderId}</td>
-                     
-                                </tr>
+                                    <td>
+                                        <select value={order.status} onChange={(e) => updateOrderStatus(user.telegramId, order.orderId, e.target.value)} className={getStatusClass(order.status)}>
+                                            <option value="В обработке" className='status-processingOpt'>В обработке</option>
+                                            <option value="Отменен" className='status-cancelledOpt'>Отменен</option>
+                                            <option value="Выполнен" className='status-completedOpt'>Выполнен</option>
+                                        </select>
+                                    </td>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>
