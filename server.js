@@ -1,9 +1,9 @@
 const express = require('express');
-const cors = require('cors');
 const connectToDatabase = require('./db');
+const cors = require('cors'); 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -12,11 +12,11 @@ app.get('/api/orders', async (req, res) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection('users');
-        const users = await collection.find({}).toArray();
-        res.json(users);
+        const orders = await collection.find({}).toArray();
+        res.json(orders);
     } catch (error) {
-        console.error('Ошибка при получении заказов:', error);
-        res.status(500).send('Ошибка при получении заказов');
+        console.error('Error retrieving orders:', error);
+        res.status(500).json({ error: 'Failed to retrieve orders' });
     }
 });
 
@@ -36,6 +36,6 @@ app.post('/api/orders/update-status', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Сервер запущен на порту ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
