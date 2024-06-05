@@ -20,40 +20,24 @@ app.get('/api/orders', async (req, res) => {
     }
 });
 
-bot.post('/api/orders/update-status', async (ctx) => {
-    const { telegramId, orderId, newStatus } = ctx.body;
+app.post('/api/orders/update-status', async (req, res) => {
+    const { telegramId, orderId, newStatus } = req.body;
     try {
         const db = await connectToDatabase();
         const collection = db.collection('users');
-
-        const user = await collection.findOne({
-            telegramId: parseInt(telegramId, 10),
-            'orders.orderId': orderId
-        });
-
-        if (!user) {
-            return ctx.status(404).send('Order not found');
-        }
-
         await collection.updateOne(
-            { telegramId: parseInt(telegramId, 10), 'orders.orderId': orderId },
+            { telegramId: telegramId, 'orders.orderId': orderId },
             { $set: { 'orders.$.status': newStatus } }
         );
-
-        if (newStatus === "Выполнен" && user.referrerId) {
-            const referrer = await collection.findOne({ telegramId: user.referrerId });
-            if (referrer && !referrer.friends.includes(user.telegramId)) {
-                await collection.updateOne(
-                    { telegramId: user.referrerId },
-                    { $push: { friends: user.telegramId } }
-                );
-            }
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).send('User not found');
         }
-
-        ctx.status(200).send('Order status updated');
+        res.status(200).send('Статус заказа обновлен');
     } catch (error) {
-        console.error('Error updating order status:', error);
-        ctx.status(500).send('Error updating order status');
+        console.error('Ошибка при обновлении статуса заказа:', error);
+        res.status(500).send('Ошибка при обновлении статуса заказа');
     }
 });
 
