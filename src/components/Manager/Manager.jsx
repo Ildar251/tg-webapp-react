@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+require('dotenv').config();
 import '../../App.css';
 import "./Manager.css";
 const Manager = () => {
@@ -7,7 +8,7 @@ const Manager = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('https://munoucuchol.beget.app/api/orders');
+                const response = await fetch(`${process.env.URL}/api/orders`);
                 const data = await response.json();
                 console.log('Полученные заказы:', data); // Вывод данных в консоль
 
@@ -28,7 +29,7 @@ const Manager = () => {
 
     const updateOrderStatus = async (telegramId, orderId, newStatus) => {
         try {
-            const response = await fetch('https://munoucuchol.beget.app/api/orders/update-status', {
+            const response = await fetch(`${process.env.URL}/api/orders/update-status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
