@@ -57,7 +57,7 @@ app.post('/api/orders/update-status', async (req, res) => {
                 );
 
                 // Отправляем уведомление через Telegram API
-                const message = `По вашей реферальной ссылке ${user.userName || 'пользователь'} сделал заказ, который был выполнен!`;
+                const message = `По вашей реферальной ссылке ${user.userName || 'пользователь'} сделал заказ, вы получите 25% скидку на следующий вызов!`;
                 await bot.api.sendMessage(referrer.telegramId, message);
             }
         }
