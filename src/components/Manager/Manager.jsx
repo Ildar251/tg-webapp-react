@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 require('dotenv').config();
+import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import "./Manager.css";
 const Manager = () => {
