@@ -77,8 +77,7 @@ const Manager = () => {
             <h1>Управление заказами</h1>
             {orders.map((user) => (
                 <div >
-                    <h2>Telegram ID: {user.telegramId}</h2>
-                    <h2>Username: {user.userName}</h2>
+                    <h2>ID: {user.telegramId} User: {user.userName}</h2>
                     <table className="orders-table">
                         <thead>
                             <tr>
