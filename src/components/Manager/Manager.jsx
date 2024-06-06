@@ -13,7 +13,7 @@ const Manager = () => {
 
                 // Упорядочиваем заказы по telegramId
                 const orderedOrders = data.reduce((acc, user) => {
-                    acc.push({ telegramId: user.telegramId, orders: user.orders });
+                    acc.push({ telegramId: user.telegramId, userName: user.userName, orders: user.orders });
                     return acc;
                 }, []);
 
@@ -78,6 +78,7 @@ const Manager = () => {
             {orders.map((user) => (
                 <div >
                     <h2>Telegram ID: {user.telegramId}</h2>
+                    <h2>Username: {user.userName}</h2>
                     <table className="orders-table">
                         <thead>
                             <tr>
