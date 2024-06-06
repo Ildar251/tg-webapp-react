@@ -1,5 +1,6 @@
 .manager-container {
     padding: 20px;
+    text-align: center;
 }
 
 .orders-table {
@@ -76,8 +77,9 @@ select {
 
 h1 {
     font-size: 28px;
+    margin-bottom: 20px;
 }
 
 h2 {
-    font-size: 22px;
+    font-size: 18px;
 }
