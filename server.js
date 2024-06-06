@@ -25,25 +25,48 @@ app.post('/api/orders/update-status', async (req, res) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection('users');
-        
-        // Обновление статуса заказа
-        await collection.updateOne(
+
+        const user = await collection.findOne({ telegramId: telegramId });
+
+        if (!user) {
+            return res.status(404).send('Пользователь не найден');
+        }
+
+        // Обновляем статус заказа
+        const updateResult = await collection.updateOne(
             { telegramId: telegramId, 'orders.orderId': orderId },
             { $set: { 'orders.$.status': newStatus } }
         );
 
-        // Учет рефералов только если заказ выполнен
-        if (newStatus === "Выполнен") {
-            const user = await collection.findOne({ telegramId: telegramId });
-            if (user && user.referrerId) {
-                const referrer = await collection.findOne({ telegramId: user.referrerId });
+        if (updateResult.modifiedCount === 0) {
+            return res.status(404).send('Заказ не найден');
+        }
 
-                if (referrer && !referrer.friends.includes(user.telegramId)) {
-                    await collection.updateOne(
-                        { telegramId: user.referrerId },
-                        { $push: { friends: user.telegramId } }
-                    );
-                }
+        if (newStatus === 'Выполнен' && user.referrerId) {
+            const referrer = await collection.findOne({ telegramId: user.referrerId });
+
+            if (referrer && !referrer.friends.includes(telegramId)) {
+                await collection.updateOne(
+                    { telegramId: user.referrerId },
+                    { $push: { friends: telegramId } }
+                );
+
+                // Отправляем уведомление через Telegram API
+                const message = `По вашей реферальной ссылке ${user.userName || 'пользователь'} сделал заказ, который был выполнен!`;
+                const botToken = process.env.BOT_API_KEY;
+                const chatId = referrer.telegramId;
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                    }),
+                });
             }
         }
 
