@@ -5,6 +5,8 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+const bot = new Bot(process.env.BOT_API_KEY);
+
 app.use(cors());
 app.use(express.json());
 
@@ -53,20 +55,7 @@ app.post('/api/orders/update-status', async (req, res) => {
 
                 // Отправляем уведомление через Telegram API
                 const message = `По вашей реферальной ссылке ${user.userName || 'пользователь'} сделал заказ, который был выполнен!`;
-                const botToken = process.env.BOT_API_KEY;
-                const chatId = referrer.telegramId;
-                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-                await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                    }),
-                });
+                await bot.api.sendMessage(referrer.telegramId, message);
             }
         }
 
