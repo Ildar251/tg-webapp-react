@@ -25,15 +25,28 @@ app.post('/api/orders/update-status', async (req, res) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection('users');
+        
+        // Обновление статуса заказа
         await collection.updateOne(
             { telegramId: telegramId, 'orders.orderId': orderId },
             { $set: { 'orders.$.status': newStatus } }
         );
-        if (user) {
-            res.json(user);
-        } else {
-            res.status(404).send('User not found');
+
+        // Учет рефералов только если заказ выполнен
+        if (newStatus === "Выполнен") {
+            const user = await collection.findOne({ telegramId: telegramId });
+            if (user && user.referrerId) {
+                const referrer = await collection.findOne({ telegramId: user.referrerId });
+
+                if (referrer && !referrer.friends.includes(user.telegramId)) {
+                    await collection.updateOne(
+                        { telegramId: user.referrerId },
+                        { $push: { friends: user.telegramId } }
+                    );
+                }
+            }
         }
+
         res.status(200).send('Статус заказа обновлен');
     } catch (error) {
         console.error('Ошибка при обновлении статуса заказа:', error);
