@@ -1,6 +1,7 @@
 {
   "name": "telegram-bot-narkolog-react",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -8,7 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "dotens": "^4.19.2",
     "grammy": "^1.24.1",
     "mongodb": "^6.7.0",
     "react": "^18.3.1",
