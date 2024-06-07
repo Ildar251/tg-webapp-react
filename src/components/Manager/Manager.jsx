@@ -3,7 +3,15 @@ import '../../App.css';
 import "./Manager.css";
 const Manager = () => {
     const [orders, setOrders] = useState([]);
-    const API_URL = process.env.REACT_APP_API_URL;
+
+    // Функция для получения значения GET-параметра
+    const getQueryParam = (param) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    };
+
+    const API_URL = getQueryParam('api');
+    
     useEffect(() => {
         const fetchOrders = async () => {
             try {
