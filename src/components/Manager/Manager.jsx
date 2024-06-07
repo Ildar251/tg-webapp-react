@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+require('dotenv').config();
 import '../../App.css';
 import "./Manager.css";
 const Manager = () => {
